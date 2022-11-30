@@ -15,10 +15,7 @@ jobs:
           submodules: recursive
             # Update references
       - name: Update maven
-        run: | 
-          sed '$ i\<properties><sonar.organization>mpil2023</sonar.organization><sonar.host.url>https://sonarcloud.io</sonar.host.url></properties>' ./spring-petclinic/pom.xml > ./spring-petclinic/tmp.xml
-          rm ./spring-petclinic/pom.xml
-          mv ./spring-petclinic/tmp.xml ./spring-petclinic/pom.xml
+        run: sed '$ i\<properties><sonar.organization>mpil2023</sonar.organization><sonar.host.url>https://sonarcloud.io</sonar.host.url></properties>' ./spring-petclinic/pom.xml > ./spring-petclinic/tmp.xml
       - name: Set up JDK 11
         uses: actions/setup-java@v1
         with:
@@ -33,10 +30,10 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/tmp.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=MPIL2023_tp-analyse-statique-AlasDiablo -f ./spring-petclinic/pom.xml
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=MPIL2023_tp-analyse-statique-AlasDiablo -f ./spring-petclinic/tmp.xml
