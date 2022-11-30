@@ -20,4 +20,4 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build and check
-      run: mvn clean package sonar:sonar
+      run: mvn clean package sonar:sonar --file spring-petclinic/pom.xml

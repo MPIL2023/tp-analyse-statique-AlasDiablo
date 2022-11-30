@@ -4,4 +4,4 @@ services:
   sonar:
     image: sonarqube
     ports:
-      - 9000:9000
+      - "9000:9000"
